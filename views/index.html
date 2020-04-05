@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% block title %} {{titulo}} {% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="jumbotron" style="margin-top: 10px;">
+        <div class="container">
+            <h2 class="text-center">{{titulo}}</h2>
+
+            <div class="alert alert-success" id="alerta">
+                <strong>{{mensagem}}</strong>
+            </div>            
+
+            <form action="/v1/conectar" method="POST" class="form-horizontal" role="form">
+                <input type="hidden" id="mensagem" name="mensagem" value="{{mensagem}}"/>
+
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="form-group">
+                            <label for="tipoBanco">Tipo:</label>
+                            <select class="form-control" id="tipo" name="tipo" data-error="Campo obrgatório." required>
+                                <option selected value="">Selecione</option>
+                                <option value="mysql">Mysql</option>
+                                <option value="mongo">MongoDB</option>
+                                <option value="rabbitmq">RabbitMQ</option>
+                              </select>                            
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="form-group">
+                            <label for="host">Host:</label>
+                            <input type="text" class="form-control" id="host" name="host" value="{{formDados.Host}}" data-error="Campo obrgatório." required/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="form-group">
+                            <label for="port">Porta:</label>
+                            <input type="number" class="form-control" id="port" name="port" value="{{formDados.Port}}" data-error="Campo obrgatório." required/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="form-group">
+                            <label for="user">Usuário:</label>
+                            <input type="text" class="form-control" id="user" name="user" value="{{formDados.User}}" data-error="Campo obrgatório." required/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="form-group">
+                            <label for="password">Senha:</label>
+                            <input type="password" class="form-control" id="password" name="password" value="{{formDados.Database}}" data-error="Campo obrgatório." required/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" id="dbFieldDiv">
+                    <div class="col-sm-8">
+                        <div class="form-group">
+                            <label for="database">Database:</label>
+                            <input type="text" class="form-control" id="database" name="database" value="{{formDados.Database}}"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" id="rabbitFieldDiv">
+                    <div class="col-sm-8">
+                        <div class="form-group">
+                            <label for="vhost">VHost:</label>
+                            <input type="text" class="form-control" id="vhost" name="vhost" value="{{formDados.VHost}}"/>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" value="salvar" class="btn btn-success">Conectar</button>
+                <a class="btn btn-info" href="/">Cancelar</a>
+            </form>
+                        
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+
+<script>
+    $('#alerta').hide();
+    $('#dbFieldDiv').hide();
+    $('#rabbitFieldDiv').hide();
+
+    var inputvalue = $("#mensagem").attr("value");
+
+    if(inputvalue !== "") {
+        $('#alerta').show();
+    }
+
+    $("#tipo").change(function() {
+    if ($(this).val() == "rabbitmq") {
+        $('#alerta').hide();
+        $('#dbFieldDiv').hide();
+        $('#rabbitFieldDiv').show();
+        $('#rabbitFieldDiv').attr('required', '');
+        $('#rabbitFieldDiv').attr('data-error', 'This field is required.');        
+    } else {
+        $('#alerta').hide();
+        $('#dbFieldDiv').show();
+        $('#rabbitFieldDiv').hide();
+        $('#dbFieldDiv').attr('required', '');
+        $('#dbFieldDiv').attr('data-error', 'This field is required.');        
+    }
+    });
+
+    $(function () {
+            var inputs = document.getElementsByTagName("INPUT");
+            for (var i = 0; i < inputs.length; i++) {
+                inputs[i].oninvalid = function (e) {
+                    e.target.setCustomValidity("");
+                    if (!e.target.validity.valid) {
+                        e.target.setCustomValidity(e.target.getAttribute("data-error"));
+                    }
+                };
+            }
+            var selects = document.getElementsByTagName("SELECT");
+            for (var i = 0; i < selects.length; i++) {
+                selects[i].oninvalid = function (e) {
+                    e.target.setCustomValidity("");
+                    if (!e.target.validity.valid) {
+                        e.target.setCustomValidity(e.target.getAttribute("data-error"));
+                    }
+                };
+            }
+
+        });    
+</script>
+
+{% endblock %}
