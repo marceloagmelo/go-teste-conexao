@@ -3,3 +3,6 @@
 
 # Arquivo binario
 go-teste-conexao
+
+# Vendor
+vendor/
