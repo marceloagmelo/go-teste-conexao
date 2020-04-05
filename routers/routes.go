@@ -1,18 +1,13 @@
 package routers
 
 import (
-	"github.com/labstack/echo"
+	"net/http"
+
 	"github.com/marceloagmelo/go-teste-conexao/controllers"
 )
 
-//App é uma instância de echo
-var App *echo.Echo
-
-func init() {
-	App = echo.New()
-
-	App.GET("/", controllers.Home)
-
-	api := App.Group("/v1")
-	api.POST("/conectar", controllers.Conectar)
+//CarregaRotas  as rotas
+func CarregaRotas() {
+	http.HandleFunc("/", controllers.Home)
+	http.HandleFunc("/v1/conectar", controllers.Conectar)
 }

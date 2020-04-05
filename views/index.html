@@ -1,20 +1,23 @@
-{% extends "base.html" %}
+{{define "Index"}}
 
-{% block title %} {{titulo}} {% endblock %}
+<!DOCTYPE html>
+<html lang="">
 
-{% block body %}
+{{template "_head"}}
+
+<body>
 
 <div class="container">
     <div class="jumbotron" style="margin-top: 10px;">
         <div class="container">
-            <h2 class="text-center">{{titulo}}</h2>
+            <h2 class="text-center">{{.titulo}}</h2>
 
             <div class="alert alert-success" id="alerta">
-                <strong>{{mensagem}}</strong>
+                <strong>{{.mensagem}}</strong>
             </div>            
 
             <form action="/v1/conectar" method="POST" class="form-horizontal" role="form">
-                <input type="hidden" id="mensagem" name="mensagem" value="{{mensagem}}"/>
+                <input type="hidden" id="mensagem" name="mensagem" value="{{.mensagem}}"/>
 
                 <div class="row">
                     <div class="col-sm-8">
@@ -34,7 +37,7 @@
                     <div class="col-sm-8">
                         <div class="form-group">
                             <label for="host">Host:</label>
-                            <input type="text" class="form-control" id="host" name="host" value="{{formDados.Host}}" data-error="Campo obrgatório." required/>
+                            <input type="text" class="form-control" id="host" name="host" value="{{.formDados.Host}}" data-error="Campo obrgatório." required/>
                         </div>
                     </div>
                 </div>
@@ -43,7 +46,7 @@
                     <div class="col-sm-8">
                         <div class="form-group">
                             <label for="port">Porta:</label>
-                            <input type="number" class="form-control" id="port" name="port" value="{{formDados.Port}}" data-error="Campo obrgatório." required/>
+                            <input type="number" class="form-control" id="port" name="port" value="{{.formDados.Port}}" data-error="Campo obrgatório." required/>
                         </div>
                     </div>
                 </div>
@@ -52,7 +55,7 @@
                     <div class="col-sm-8">
                         <div class="form-group">
                             <label for="user">Usuário:</label>
-                            <input type="text" class="form-control" id="user" name="user" value="{{formDados.User}}" data-error="Campo obrgatório." required/>
+                            <input type="text" class="form-control" id="user" name="user" value="{{.formDados.User}}" data-error="Campo obrgatório." required/>
                         </div>
                     </div>
                 </div>
@@ -61,7 +64,7 @@
                     <div class="col-sm-8">
                         <div class="form-group">
                             <label for="password">Senha:</label>
-                            <input type="password" class="form-control" id="password" name="password" value="{{formDados.Database}}" data-error="Campo obrgatório." required/>
+                            <input type="password" class="form-control" id="password" name="password" value="{{.formDados.Database}}" data-error="Campo obrgatório." required/>
                         </div>
                     </div>
                 </div>
@@ -70,7 +73,7 @@
                     <div class="col-sm-8">
                         <div class="form-group">
                             <label for="database">Database:</label>
-                            <input type="text" class="form-control" id="database" name="database" value="{{formDados.Database}}"/>
+                            <input type="text" class="form-control" id="database" name="database" value="{{.formDados.Database}}"/>
                         </div>
                     </div>
                 </div>
@@ -79,7 +82,7 @@
                     <div class="col-sm-8">
                         <div class="form-group">
                             <label for="vhost">VHost:</label>
-                            <input type="text" class="form-control" id="vhost" name="vhost" value="{{formDados.VHost}}"/>
+                            <input type="text" class="form-control" id="vhost" name="vhost" value="{{.formDados.VHost}}"/>
                         </div>
                     </div>
                 </div>
@@ -92,9 +95,7 @@
     </div>
 </div>
 
-{% endblock %}
-
-{% block js %}
+</body>
 
 <script>
     $('#alerta').hide();
@@ -146,4 +147,6 @@
         });    
 </script>
 
-{% endblock %}
+</html>
+
+{{end}}

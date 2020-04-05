@@ -1,22 +1,17 @@
 package main
 
 import (
+	"log"
 	"net/http"
 
-	r "github.com/marceloagmelo/go-teste-conexao/routers"
-	"github.com/marceloagmelo/pongor-echo"
+	"github.com/marceloagmelo/go-teste-conexao/routers"
 )
 
 func main() {
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 
-	e := r.App
-	e.Static("/static", "./static")
+	routers.CarregaRotas()
 
-	p := pongor.GetRenderer()
-	p.Directory = "views"
-
-	e.Renderer = p
-
-	e.Start(":8080")
+	log.Println("Servidor rodando na porta 8080...")
+	http.ListenAndServe(":8080", nil)
 }

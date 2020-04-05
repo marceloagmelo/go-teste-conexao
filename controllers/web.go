@@ -1,61 +1,77 @@
 package controllers
 
 import (
+	"html/template"
 	"log"
 	"net/http"
 	"strconv"
 
-	"github.com/labstack/echo"
 	"github.com/marceloagmelo/go-teste-conexao/lib"
 	"github.com/marceloagmelo/go-teste-conexao/models"
 	"github.com/marceloagmelo/go-teste-conexao/variaveis"
 )
 
+var view = template.Must(template.ParseGlob("views/*.html"))
+
 //Home é a página inicial da aplicação
-func Home(c echo.Context) error {
+func Home(w http.ResponseWriter, r *http.Request) {
 	formDados := models.FormDados{}
 	formDados.VHost = "/"
 
 	data := map[string]interface{}{
 		"titulo":    "Teste de conexão",
 		"formDados": formDados,
+		"mensagem":  "",
 	}
 
-	return c.Render(http.StatusOK, "index.html", data)
+	view.ExecuteTemplate(w, "Index", data)
 }
 
 //Conectar os dados no banco de dados
-func Conectar(c echo.Context) error {
-	tipo := c.FormValue("tipo")
-	host := c.FormValue("host")
-	database := c.FormValue("database")
-	port := c.FormValue("port")
-	user := c.FormValue("user")
-	password := c.FormValue("password")
-	vHost := c.FormValue("vhost")
+func Conectar(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
+		tipo := r.FormValue("tipo")
+		host := r.FormValue("host")
+		database := r.FormValue("database")
+		port := r.FormValue("port")
+		user := r.FormValue("user")
+		password := r.FormValue("password")
+		vHost := r.FormValue("vhost")
 
-	var formDados models.FormDados
-	formDados.Tipo = tipo
-	formDados.Host = host
-	formDados.Database = database
-	formDados.Port, _ = strconv.Atoi(port)
-	formDados.User = user
-	formDados.Password = password
-	formDados.VHost = vHost
+		var formDados models.FormDados
+		formDados.Tipo = tipo
+		formDados.Host = host
+		formDados.Database = database
+		formDados.Port, _ = strconv.Atoi(port)
+		formDados.User = user
+		formDados.Password = password
+		formDados.VHost = vHost
 
-	mensagem := ""
+		mensagem := ""
 
-	if tipo != "" {
-		switch tipo {
-		case "mysql":
-			mensagem = conectarMysql(formDados)
-		case "mongo":
-			mensagem = conectarMongo(formDados)
-		case "rabbitmq":
-			mensagem = conectarRabbitMQ(formDados)
-		default:
-			log.Println("Tipo não encontrado!")
+		if tipo != "" {
+			switch tipo {
+			case "mysql":
+				mensagem = conectarMysql(formDados)
+			case "mongo":
+				mensagem = conectarMongo(formDados)
+			case "rabbitmq":
+				mensagem = conectarRabbitMQ(formDados)
+			default:
+				log.Println("Tipo não encontrado!")
+			}
+
+			formDados.Password = ""
+
+			data := map[string]interface{}{
+				"titulo":    "Teste de conexão",
+				"formDados": formDados,
+				"mensagem":  mensagem,
+			}
+
+			view.ExecuteTemplate(w, "Index", data)
 		}
+		mensagem = "Campos obrigatórios!"
 
 		formDados.Password = ""
 
@@ -65,19 +81,8 @@ func Conectar(c echo.Context) error {
 			"mensagem":  mensagem,
 		}
 
-		return c.Render(http.StatusOK, "index.html", data)
+		view.ExecuteTemplate(w, "Index", data)
 	}
-	mensagem = "Campos obrigatórios!"
-
-	formDados.Password = ""
-
-	data := map[string]interface{}{
-		"titulo":    "Teste de conexão",
-		"formDados": formDados,
-		"mensagem":  mensagem,
-	}
-
-	return c.Render(http.StatusOK, "index.html", data)
 }
 
 func conectarMysql(formDados models.FormDados) (mensagem string) {

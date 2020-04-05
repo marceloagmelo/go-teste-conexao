@@ -23,4 +23,7 @@ then
   chmod 755 $APP_HOME/$file
 fi
 
-exec $APP_HOME/$file
+pushd $APP_HOME
+./$file
+popd
+

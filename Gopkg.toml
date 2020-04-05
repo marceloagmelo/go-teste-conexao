@@ -26,14 +26,6 @@
 
 
 [[constraint]]
-  name = "github.com/labstack/echo"
-  version = "3.3.10"
-
-[[constraint]]
-  branch = "master"
-  name = "github.com/marceloagmelo/pongor-echo"
-
-[[constraint]]
   name = "go.mongodb.org/mongo-driver"
   version = "1.3.1"
 
