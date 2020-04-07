@@ -31,3 +31,6 @@ var Port = os.Getenv("PORT")
 
 //VHost do rabbitmq
 var VHost = os.Getenv("RABBITMQ_DEFAULT_VHOST")
+
+// AutenticarDatabase mecanismo de autenticação do mongo
+var AutenticarDatabase = "N"

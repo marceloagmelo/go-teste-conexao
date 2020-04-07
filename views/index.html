@@ -78,6 +78,18 @@
                     </div>
                 </div>
 
+                <div class="row" id="mongoFieldDiv">
+                    <div class="col-sm-8">
+                        <div class="form-group">
+                            <label for="autenticarDatabase">Mecanismo de Autenticação:</label>
+                            <select class="form-control" id="autenticarDatabase" name="autenticarDatabase">
+                                <option selected value="N">Não</option>
+                                <option value="S">Sim</option>
+                              </select>                            
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row" id="rabbitFieldDiv">
                     <div class="col-sm-8">
                         <div class="form-group">
@@ -101,6 +113,7 @@
     $('#alerta').hide();
     $('#dbFieldDiv').hide();
     $('#rabbitFieldDiv').hide();
+    $('#mongoFieldDiv').hide();
 
     var inputvalue = $("#mensagem").attr("value");
 
@@ -112,12 +125,14 @@
     if ($(this).val() == "rabbitmq") {
         $('#alerta').hide();
         $('#dbFieldDiv').hide();
+        $('#mongoFieldDiv').hide();
         $('#rabbitFieldDiv').show();
         $('#rabbitFieldDiv').attr('required', '');
         $('#rabbitFieldDiv').attr('data-error', 'This field is required.');        
     } else {
         $('#alerta').hide();
         $('#dbFieldDiv').show();
+        $('#mongoFieldDiv').show();
         $('#rabbitFieldDiv').hide();
         $('#dbFieldDiv').attr('required', '');
         $('#dbFieldDiv').attr('data-error', 'This field is required.');        
