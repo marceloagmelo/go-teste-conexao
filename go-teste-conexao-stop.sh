@@ -14,7 +14,7 @@ docker rm -f rabbitmq
 
 # Teste de conexao
 echo "Finalizando o go-teste-conexao..."
-docker rm -f go-teste-conexao
+docker rm -f marceloagmelo/go-teste-conexao
 
 # Remover rede
 echo "Removendo a rede teste-conexao-net..."

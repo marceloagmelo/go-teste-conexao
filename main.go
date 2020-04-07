@@ -12,6 +12,6 @@ func main() {
 
 	routers.CarregaRotas()
 
-	log.Println("Servidor rodando na porta 8080...")
+	log.Println("Servico escutando a 8080...")
 	http.ListenAndServe(":8080", nil)
 }

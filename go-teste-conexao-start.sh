@@ -39,7 +39,7 @@ rabbitmq:3.6.16-management
 echo "Subindo o go-teste-conexao..."
 docker run -d --name go-teste-conexao --network teste-conexao-net  \
 -p 8080:8080 \
-go-teste-conexao
+masrceloagmelo/go-teste-conexao
 
 # Listando os containers
 docker ps
