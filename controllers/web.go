@@ -73,15 +73,7 @@ func Conectar(w http.ResponseWriter, r *http.Request) {
 		}
 		mensagem = "Campos obrigatórios!"
 
-		formDados.Password = ""
-
-		data := map[string]interface{}{
-			"titulo":    "Teste de conexão",
-			"formDados": formDados,
-			"mensagem":  mensagem,
-		}
-
-		view.ExecuteTemplate(w, "Index", data)
+		http.Redirect(w, r, "/", 301)
 	}
 }
 

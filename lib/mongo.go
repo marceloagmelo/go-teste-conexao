@@ -16,8 +16,15 @@ func AutenticarMongo() (mensagem string) {
 
 	c, mensagem := getClient()
 	if mensagem == "" {
-		err := c.Ping(context.Background(), readpref.Primary())
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
+		err := c.Connect(ctx)
 		mensagem = utils.CheckErr(err)
+
+		if mensagem == "" {
+			err := c.Ping(context.Background(), readpref.Primary())
+			mensagem = utils.CheckErr(err)
+		}
 	}
 
 	if mensagem == "" {
@@ -30,7 +37,7 @@ func AutenticarMongo() (mensagem string) {
 
 //getClient recuperar o client
 func getClient() (client *mongo.Client, mensagem string) {
-	stringConexao := "mongodb://" + variaveis.User + ":" + variaveis.Password + "@" + variaveis.Host + ":" + variaveis.Port
+	stringConexao := "mongodb://" + variaveis.User + ":" + variaveis.Password + "@" + variaveis.Host + ":" + variaveis.Port + ":" + variaveis.Database
 	clientOptions := options.Client().ApplyURI(stringConexao)
 	client, err := mongo.NewClient(clientOptions)
 	mensagem = utils.CheckErr(err)
