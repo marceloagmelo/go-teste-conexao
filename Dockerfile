@@ -47,17 +47,6 @@ RUN groupadd --gid $GID golang && useradd --uid $UID -m -g golang golang && \
     chown -R golang:golang $IMAGE_SCRIPTS_HOME && \
     rm -Rf /tmp/* && rm -Rf /var/tmp/*
 
-#######################################################################
-##### We have to expose image metada as label and ENV
-#######################################################################
-LABEL br.com.santander.imageowner="Corporate Techonology" \
-      br.com.santander.description="Teste de conexao runtime for node microservices" \
-      br.com.santander.components="Golang Server"
-
-ENV br.com.santander.imageowner="Corporate Techonology"
-ENV br.com.santander.description="Teste de conexao runtime for node microservices"
-ENV br.com.santander.components="Golang Server"
-
 EXPOSE 8080
 
 USER golang
